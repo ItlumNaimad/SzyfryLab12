@@ -3,9 +3,11 @@
 //
 #pragma once
 #include <string>
+#include <iostream>
 namespace Ciphers
 {
-    std::string Caeser(std::string &message, int n);
+    std::string Cesar(std::string &message, int n);
+    void Fence(std::string &message, int h);
 }
 
 
