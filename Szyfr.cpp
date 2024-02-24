@@ -5,6 +5,13 @@
 #include "Szyfr.h"
 #define ENTER 13
 #define SPACJA 32
+void swap(char&a, char&b)
+{
+    char temporary = a;
+    a=b;
+    b=temporary;
+}
+
 std::string Ciphers::Cesar(std::string &message, int n)
 {
     std::string zaszyfrowane;
@@ -44,20 +51,73 @@ std::string Ciphers::Cesar(std::string &message, int n)
     return zaszyfrowane;
 }
 
-void Ciphers::Fence(std::string &message, int h)
+std::string Shifting(std::string &message)
 {
-    std::string fences[h];
-    int i=0;
-    // for bez zmiennej iteracyjnej jawnej do zbiorów danych
-    // char letter - zmienna w której chcemy przechować wartość
-    // message - zbiór danych z których chcemy iterować
+    int dlugosc=message.length();
+    for(int i=0; i<dlugosc; i+=2)
+    {
+        swap(message[i],message[i+1]);
+    }
+    return message;
+}
+/*
+std::string Ciphers::Fence(std::string &message, int h)
+{
+    std::string crypted;
+    // Tworzenie h pustych stringów
+    std::vector<std::string> fences(h, "");
+    int i = 0;
+    int direction = 1;
+    // Iteracja bez jawnej zmiennej iteracyjnej
+    // char letter - zmienna którą będziemy wyświetlać w for'ze
+    // message - zmienna struktury danych, z której można pobierać kolejno
+    // elementy rosnąco z indeksów
     for(char letter : message)
     {
         fences[i] += letter;
-        i = (i + 1) % h;
+        i += direction;
+        // Kierunek zmiany wierszy powinien iść z góry na dół i z dołu do góry
+        // Wcześniej nie uwzględniłem tego w swoim kodzie i dlatego pojawiały się błędy
+        if (i == 0 || i == h - 1)
+        {
+            direction = -direction;
+        }
     }
-    for(std::string fence_crypted : fences)
+    for(const std::string& fence_crypted : fences)
     {
-        std::cout << fence_crypted;
+        crypted += fence_crypted;
     }
+    return crypted;
 }
+std::string Deciphers::deFence(std::string &crypt_message, int h)
+{
+    std::string decrypted_message;
+    int fragment_length = (crypt_message.length() + h - 1) / h;
+
+    std::vector<std::string> fences(h, "");
+    int i = 0;
+    int direction = 1;
+    for(char letter : crypt_message)
+    {
+        fences[i] += letter;
+        i += direction;
+        // Znowu uwzględnienie kierunku
+        if (i == 0 || i == h - 1)
+        {
+            direction = -direction;
+        }
+    }
+    for(int j = 0; j < fragment_length; ++j)
+    {
+        for(const std::string& fence_crypted : fences)
+        {
+            // Dodanie j-tego znaku z każdego elementu tablicy fences do odszyfrowanej wiadomości
+            if (j < fence_crypted.length())
+            {
+                decrypted_message += fence_crypted[j];
+            }
+        }
+    }
+    return decrypted_message;
+}
+*/

@@ -4,10 +4,15 @@
 #pragma once
 #include <string>
 #include <iostream>
+void swap(char& a, char& b);
 namespace Ciphers
 {
     std::string Cesar(std::string &message, int n);
-    void Fence(std::string &message, int h);
+    //std::string Fence(std::string &message, int h);
+    std::string Shifting(std::string &message);
 }
-
+namespace Deciphers
+{
+    //std::string deFence(std::string &crypt_message, int h);
+}
 
